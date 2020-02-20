@@ -8,13 +8,13 @@ Installs Homebrew (Linuxbrew) and dependencies.
 * `homebrew_user` - The user that will own Homebrew (default: `deploy`)
 * `homebrew_group` - The group that will own Homebrew (default: `deploy`)
 
-Any service installed via Homebrew will be owned by `homebrew_user`:`homebrew_group`. This means:
+Any package installed via Homebrew will be owned by `homebrew_user`:`homebrew_group`. This means:
 
 1. Neither of these should be `root` (Homebrew install will fail if run as root).
 
-2. Any process that needs to use a Homebrew-managed service needs to be run by `homebrew_user` or a user in `homebrew_group`
+2. Any process that needs to use a Homebrew-managed package needs to be run by `homebrew_user` or a user in `homebrew_group`
 
-If Homebrew-managed services will be called by a Rails app owned by `deploy:deploy`, the defaults will be OK.
+If Homebrew-managed packages will be called by a Rails app owned by `deploy:deploy`, the defaults will be OK.
 
 For Vagrant, include the role like this to make `vagrant:vagrant` the owner:
 
