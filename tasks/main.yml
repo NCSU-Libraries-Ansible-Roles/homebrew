@@ -1,0 +1,45 @@
+---
+- name: install build tools
+  yum:
+    name: "@Development tools"
+    state: present
+- name: install other dependencies
+  yum:
+    name: ['curl', 'file', 'git']
+    state: present
+- name: give directories to homebrew_user:homebrew_group temporarily
+  file:
+    path: "{{item}}"
+    owner: "{{homebrew_user}}"
+    group: "{{homebrew_group}}"
+  with_items: "{{temp_chown_dirs}}"
+- name: give directories to homebrew_user:homebrew_group permenantly
+  file:
+    path: "{{item}}"
+    owner: "{{homebrew_user}}"
+    group: "{{homebrew_group}}"
+    recurse: true
+  with_items:
+    - "/usr/local/Homebrew"
+    - "/home/linuxbrew"
+- name: install homebrew
+  become_user: "{{homebrew_user}}"
+  shell: yes | sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
+- name: set PATH
+  become_user: "{{homebrew_user}}"
+  shell: echo 'export PATH="/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin/:$PATH"' >>~/.bashrc
+- name: set MANPATH
+  become_user: "{{homebrew_user}}"
+  shell: echo 'export MANPATH="/home/linuxbrew/.linuxbrew/share/man:$MANPATH"' >>~/.bashrc
+- name: set INFOPATH
+  become_user: "{{homebrew_user}}"
+  shell: echo 'export INFOPATH="/home/linuxbrew/.linuxbrew/share/info:$INFOPATH"' >>~/.bashrc
+- name: source .bashrc for brew paths
+  become_user: "{{homebrew_user}}"
+  shell: source  ~/.bashrc
+- name: give directories back to root:root
+  file:
+    path: "{{item}}"
+    owner: root
+    group: root
+  with_items: "{{temp_chown_dirs}}"

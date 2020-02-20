@@ -1,0 +1,9 @@
+---
+homebrew_user: deploy
+homebrew_group: deploy
+temp_chown_dirs:
+  - '/usr/local/bin'
+  - '/usr/local/share'
+  - '/usr/local/etc'
+  - '/usr/local/share/man'
+  - '/usr/local/share/man/man1'
